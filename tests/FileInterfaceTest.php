@@ -3,6 +3,7 @@
 namespace Tsc\CatStorageSystem;
 
 use PHPUnit\Framework\TestCase;
+use DateTimeInterface;
 
 class FileInterfaceTest extends TestCase {
 

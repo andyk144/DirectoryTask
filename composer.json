@@ -5,7 +5,9 @@
     "require-dev": {
         "phpunit/phpunit": "^6.4"
     },
-    "require": {},
+    "require": {
+        "psy/psysh": "@stable"
+    },
     "autoload": {
         "psr-4": {
             "Tsc\\CatStorageSystem\\": "src/"
