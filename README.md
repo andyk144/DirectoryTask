@@ -23,3 +23,5 @@ composer install
 ```
 
 ### Usage Examples
+The below examples have been run using PsySH REPL.
+
