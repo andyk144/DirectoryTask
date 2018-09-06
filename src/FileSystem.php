@@ -28,21 +28,12 @@ class FileSystem implements FileSystemInterface {
     }
   }
 
-  /**
-   * @param FileInterface $file
-   *
-   * @return FileInterface
-   */
+
   public function updateFile(FileInterface $file) {
     $file->setModifiedTime(new \DateTime());
   }
 
-  /**
-   * @param FileInterface $file
-   * @param string $newName
-   *
-   * @return FileInterface
-   */
+
   public function renameFile(FileInterface $file, $newName) {
     $newFilePath = $file->getParentDirectory()->getPath() . '/' . $newName;
     if(!file_exists($newFilePath)) {
@@ -55,11 +46,6 @@ class FileSystem implements FileSystemInterface {
     }
   }
 
-  /**
-   * @param FileInterface $file
-   *
-   * @return bool
-   */
   public function deleteFile(FileInterface $file) {
     $filepath = $file->getPath();
     if(file_exists($filepath)) {
@@ -85,18 +71,14 @@ class FileSystem implements FileSystemInterface {
       }
   }
 
-  /**
-   * @param DirectoryInterface $directory
-   * @param DirectoryInterface $parent
-   *
-   * @return DirectoryInterface
-   */
+
   public function createDirectory(
     DirectoryInterface $directory, DirectoryInterface $parent
   ) {
       if($this->isParentDirectoryPathSet($parent)) {
         $directoryPath = $parent->getPath() . '/' . $directory->getName();
         $directory->setPath($directoryPath);
+        $directory->setParentDirectory($parent);
         $parent->setSubDirectory($directory);
         mkdir($directoryPath, 0750, true);
         return $directory;
@@ -106,13 +88,6 @@ class FileSystem implements FileSystemInterface {
     }
 
 
-
-
-  /**
-   * @param DirectoryInterface $directory
-   *
-   * @return bool
-   */
   public function deleteDirectory(DirectoryInterface $directory) {
     if($this->isParentDirectoryPathSet($directory)) {
       $dirArr = $directory->getSubDirectories();
@@ -128,18 +103,13 @@ class FileSystem implements FileSystemInterface {
           unlink($object->getPath());
         }
       }
+      $parent = $directory->getParentDirectory();
+      $parent->deleteSubDirectory($directory);
       rmdir($directory->getPath());
     }
   }
 
 
-
-  /**
-   * @param DirectoryInterface $directory
-   * @param string $newName
-   *
-   * @return DirectoryInterface
-   */
   public function renameDirectory(DirectoryInterface $directory, $newName) {
     if($this->isParentDirectoryPathSet($directory)) {
       $oldDirectoryPath = $directory->getPath();
@@ -159,37 +129,21 @@ class FileSystem implements FileSystemInterface {
     }
   }
 
-  /**
-   * @param DirectoryInterface $directory
-   *
-   * @return int
-   */
+
   public function getDirectoryCount(DirectoryInterface $directory) {
     return count($directory->getSubDirectories());
   }
 
-  /**
-   * @param DirectoryInterface $directory
-   *
-   * @return int
-   */
+
   public function getFileCount(DirectoryInterface $directory) {
     return count($directory->getFiles());
   }
 
-  /**
-   * @param DirectoryInterface $directory
-   *
-   * @return int
-   */
+
   public function getDirectorySize(DirectoryInterface $directory) {
   }
 
-  /**
-   * @param DirectoryInterface $directory
-   *
-   * @return DirectoryInterface[]
-   */
+
   public function getDirectories(DirectoryInterface $directory) {
     $directoriesList = [];
     $subDirectories = $directory->getSubDirectories();
@@ -199,11 +153,7 @@ class FileSystem implements FileSystemInterface {
     return $directoriesList;
   }
 
-  /**
-   * @param DirectoryInterface $directory
-   *
-   * @return FileInterface[]
-   */
+
   public function getFiles(DirectoryInterface $directory) {
     $filesList = [];
     $files = $directory->getFiles();

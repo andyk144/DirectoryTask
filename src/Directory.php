@@ -9,6 +9,7 @@ class Directory implements DirectoryInterface {
   protected $directoryName;
   protected $createdTime;
   protected $path;
+  protected $parentDirectory;
   protected $subDirectories = [];
   protected $files = [];
 
@@ -34,6 +35,14 @@ class Directory implements DirectoryInterface {
 
   public function setPath($path) {
     $this->path = $path;
+  }
+
+  public function setParentDirectory(DirectoryInterface $parent) {
+    $this->parentDirectory = $parent;
+  }
+
+  public function getParentDirectory() {
+    return $this->parentDirectory;
   }
 
   public function getSubDirectories() {
